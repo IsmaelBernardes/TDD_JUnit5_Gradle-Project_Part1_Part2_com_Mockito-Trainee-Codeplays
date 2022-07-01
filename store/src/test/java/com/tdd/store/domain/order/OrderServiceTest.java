@@ -3,21 +3,32 @@ package com.tdd.store.domain.order;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import com.tdd.store.domain.payment.PaymentService;
 import com.tdd.store.domain.user.UserService;
 
 public class OrderServiceTest {
   
-  private PaymentService paymentService = mock(PaymentService.class);
-  private UserService userService = mock(UserService.class);
-  private OrderService orderService = new OrderService(userService, paymentService);
+  @Mock
+  private PaymentService paymentService;
+  @Mock
+  private UserService userService;
+
+  private OrderService orderService;
+
+  @BeforeEach
+  public void setUp() {
+    openMocks(this);
+    orderService = new OrderService(userService, paymentService, false);
+  }
   
   @Test
   public void should_throw_an_exception_when_user_is_minor() {
